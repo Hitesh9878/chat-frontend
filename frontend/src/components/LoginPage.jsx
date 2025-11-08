@@ -158,7 +158,7 @@ const LoginPage = () => {
                 login(data.token, data.user);
             } else {
                 const payload = {email: loginData.email, password: loginData.password};
-                const { data } = await api.post('https://lovebirds-ph.onrender.com/auth/login', payload);
+                const { data } = await api.post('https://lovebirds-ph.onrender.com/api/auth/login', payload);
                 login(data.token, data.user);
             }
         } catch (error) {
