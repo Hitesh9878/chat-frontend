@@ -1,0 +1,1237 @@
+/* src/components/MessageBubble.css */
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --whatsapp-sender: #dcf8c6;
+  --whatsapp-receiver: #ffffff;
+  --whatsapp-background: #e5ddd5;
+  --whatsapp-timestamp: #667781;
+  --whatsapp-blue: #0086ff;
+  --whatsapp-green: #25d366;
+  --whatsapp-read: #53bdeb;
+  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== BASE STYLES ===== */
+.message-bubble-wrapper {
+  display: flex;
+  margin: 4px 0;
+  position: relative;
+}
+
+.message-bubble-wrapper.sender {
+  justify-content: flex-end;
+}
+
+.message-bubble-wrapper.receiver {
+  justify-content: flex-start;
+}
+
+.message-bubble-container {
+  position: relative;
+  max-width: 70%;
+  min-width: 120px;
+}
+
+/* ===== MESSAGE BUBBLE ===== */
+.message-bubble {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: var(--border-radius-lg);
+  word-wrap: break-word;
+  transition: var(--transition);
+  box-shadow: var(--shadow-light);
+  cursor: pointer;
+}
+
+/* Sender bubble (light green with tail on bottom-right) */
+.message-bubble.sender {
+  background: var(--whatsapp-sender);
+  border-bottom-right-radius: 2px;
+  margin-left: auto;
+}
+
+/* Receiver bubble (white with tail on bottom-left) */
+.message-bubble.receiver {
+  background: var(--whatsapp-receiver);
+  border-bottom-left-radius: 2px;
+}
+
+/* Create bubble tails using pseudo-elements */
+.message-bubble.sender::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--whatsapp-sender);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+.message-bubble.receiver::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-right: 8px solid var(--whatsapp-receiver);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+/* ===== MESSAGE CONTENT ===== */
+.message-content-wrapper {
+  position: relative;
+}
+
+/* Text message */
+.message-text {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #333;
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+}
+
+/* Inline timestamp and status */
+.message-time-inline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: var(--whatsapp-timestamp);
+  white-space: nowrap;
+}
+
+/* Message status indicators */
+.message-status {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.message-status.sent {
+  color: var(--whatsapp-timestamp);
+}
+
+.message-status.delivered {
+  color: var(--whatsapp-timestamp);
+}
+
+.message-status.read {
+  color: var(--whatsapp-read);
+}
+
+.message-status.optimistic {
+  color: #999;
+  opacity: 0.7;
+}
+
+.message-status.failed {
+  color: #ff3b30;
+}
+
+.status-text {
+  display: none !important;
+}
+
+/* ===== MEDIA MESSAGES ===== */
+.message-image-container,
+.message-video-container,
+.message-voice-container,
+.message-file-container {
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.message-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: var(--border-radius);
+  display: block;
+}
+
+.message-video {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: var(--border-radius);
+  background: #000;
+}
+
+.message-voice-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  min-width: 200px;
+}
+
+.voice-icon {
+  color: var(--whatsapp-timestamp);
+  flex-shrink: 0;
+}
+
+.message-audio {
+  flex: 1;
+  height: 32px;
+}
+
+.message-file-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  min-width: 200px;
+}
+
+.message-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  flex: 1;
+}
+
+.message-file:hover {
+  color: var(--whatsapp-blue);
+}
+
+/* Download button for media */
+.download-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+
+.download-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* Timestamp overlay for media */
+.message-image-container .message-time-inline,
+.message-video-container .message-time-inline,
+.message-voice-container .message-time-inline,
+.message-file-container .message-time-inline {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.message-image-container .message-time,
+.message-video-container .message-time,
+.message-voice-container .message-time,
+.message-file-container .message-time {
+  color: white;
+  font-size: 10px;
+}
+
+/* ===== REPLY REFERENCE ===== */
+.reply-reference {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 4px;
+  max-width: 85%;
+}
+
+.reply-reference.sender {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.reply-reference.receiver {
+  margin-right: auto;
+  justify-content: flex-start;
+}
+
+.reply-reference-line {
+  width: 3px;
+  background: var(--whatsapp-blue);
+  border-radius: 2px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.reply-reference.sender .reply-reference-line {
+  order: 1;
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+.reply-reference-content {
+  flex: 1;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius);
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.reply-reference-sender {
+  display: block;
+  font-weight: 600;
+  color: var(--whatsapp-blue);
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+
+.reply-reference-text {
+  display: block;
+  color: var(--whatsapp-timestamp);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== DESKTOP ACTION BUTTONS ===== */
+.message-actions {
+  position: absolute;
+  top: -36px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: var(--shadow-medium);
+  z-index: 10;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.message-bubble-wrapper.sender .message-actions {
+  right: 0;
+}
+
+.message-bubble-wrapper.receiver .message-actions {
+  left: 0;
+}
+
+.message-action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--whatsapp-timestamp);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+}
+
+.message-action-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--whatsapp-blue);
+  transform: scale(1.1);
+}
+
+/* ===== MOBILE ACTION BUTTONS ===== */
+.mobile-actions-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.mobile-actions {
+  position: absolute;
+  top: -48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border-radius: 24px;
+  padding: 8px;
+  box-shadow: var(--shadow-heavy);
+  z-index: 20;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  pointer-events: auto;
+}
+
+.mobile-actions.sender {
+  right: 0;
+}
+
+.mobile-actions.receiver {
+  left: 0;
+}
+
+.mobile-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--whatsapp-timestamp);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.mobile-action-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--whatsapp-blue);
+  transform: translateY(-1px);
+}
+
+.mobile-action-text {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== REACTIONS ===== */
+.message-reactions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.message-reactions.sender {
+  justify-content: flex-end;
+}
+
+.message-reactions.receiver {
+  justify-content: flex-start;
+}
+
+.reaction-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 12px;
+  box-shadow: var(--shadow-light);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.reaction-badge:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-medium);
+}
+
+.reaction-badge.user-reacted {
+  background: var(--whatsapp-sender);
+  border-color: var(--whatsapp-green);
+}
+
+.reaction-emoji {
+  font-size: 14px;
+}
+
+.reaction-count {
+  font-size: 11px;
+  color: var(--whatsapp-timestamp);
+  font-weight: 500;
+}
+
+.reaction-add-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--whatsapp-timestamp);
+}
+
+/* ===== REACTION PICKER ===== */
+.reaction-picker {
+  position: absolute;
+  bottom: 100%;
+  background: white;
+  border-radius: 24px;
+  padding: 8px;
+  box-shadow: var(--shadow-heavy);
+  z-index: 30;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.2s ease-out;
+}
+
+.reaction-picker.sender {
+  right: 0;
+  margin-bottom: 8px;
+}
+
+.reaction-picker.receiver {
+  left: 0;
+  margin-bottom: 8px;
+}
+
+.reaction-picker.reactions-bar.sender {
+  bottom: calc(100% + 40px);
+}
+
+.reaction-picker.reactions-bar.receiver {
+  bottom: calc(100% + 40px);
+}
+
+.reaction-picker-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.reaction-picker-close {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--whatsapp-timestamp);
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.reaction-picker-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.reaction-options {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reaction-option {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reaction-option:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.2);
+}
+
+.reaction-option.active {
+  background: var(--whatsapp-sender);
+  transform: scale(1.1);
+}
+
+.reaction-more-btn {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--whatsapp-timestamp);
+}
+
+/* ===== EMOJI PICKER ===== */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%;
+  z-index: 30;
+  animation: slideUp 0.2s ease-out;
+}
+
+.emoji-picker-container.sender {
+  right: 0;
+  margin-bottom: 8px;
+}
+
+.emoji-picker-container.receiver {
+  left: 0;
+  margin-bottom: 8px;
+}
+
+.emoji-picker-container.reactions-bar.sender {
+  bottom: calc(100% + 40px);
+}
+
+.emoji-picker-container.reactions-bar.receiver {
+  bottom: calc(100% + 40px);
+}
+
+.emoji-picker-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 31;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+
+.emoji-picker-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+  /* Show desktop actions on hover */
+  .message-bubble-wrapper:hover .message-actions {
+    display: flex;
+  }
+  
+  /* Hide mobile actions on desktop */
+  .mobile-actions-overlay {
+    display: none;
+  }
+  
+  .message-bubble {
+    cursor: default;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .message-bubble-container {
+    max-width: 85%;
+  }
+  
+  /* Hide desktop actions on mobile */
+  .message-actions {
+    display: none !important;
+  }
+  
+  /* Show mobile actions when active */
+  .mobile-actions-overlay {
+    display: block;
+  }
+  
+  /* Adjust bubble appearance when mobile actions are active */
+  .message-bubble.mobile-actions-active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+  
+  /* Adjust bubble tails for mobile */
+  .message-bubble.sender::after {
+    right: -6px;
+    border-left-width: 6px;
+    border-top-width: 6px;
+    border-bottom-width: 6px;
+  }
+  
+  .message-bubble.receiver::before {
+    left: -6px;
+    border-right-width: 6px;
+    border-top-width: 6px;
+    border-bottom-width: 6px;
+  }
+  
+  /* Smaller reaction picker on mobile */
+  .reaction-picker {
+    padding: 6px;
+  }
+  
+  .reaction-option {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+  
+@media (max-width: 768px) {
+  .emoji-picker-container {
+    position: fixed !important;
+    bottom: 130px !important;     /* ✅ Lifted higher from bottom (adjust as needed) */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: var(--z-emoji-picker) !important;
+  }
+
+  .emoji-picker-container .EmojiPickerReact {
+    width: 200px !important;
+    height: 300px !important;     /* Slightly increased for better tap space */
+    max-width: 90vw !important;
+    border-radius: 14px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.32);
+    background: white;
+  }
+}
+
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .message-bubble-container {
+    max-width: 90%;
+  }
+  
+  .message-bubble {
+    padding: 6px 10px;
+  }
+  
+  .mobile-actions {
+    top: -42px;
+    padding: 6px;
+  }
+  
+  .mobile-action-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .mobile-action-text {
+    font-size: 12px;
+  }
+  
+  /* Adjust media sizes for small screens */
+  .message-image,
+  .message-video {
+    max-height: 200px;
+  }
+  
+  .message-voice-container,
+  .message-file-container {
+    min-width: 150px;
+    padding: 8px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --whatsapp-sender: #056162;
+    --whatsapp-receiver: #2a2f32;
+    --whatsapp-background: #0d1418;
+    --whatsapp-timestamp: #8696a0;
+  }
+  
+  .message-text {
+    color: #e9edef;
+  }
+  
+  .message-file {
+    color: #e9edef;
+  }
+  
+  .reply-reference-content {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .reaction-badge {
+    background: #2a2f32;
+    color: #e9edef;
+  }
+  
+  .message-actions,
+  .mobile-actions,
+  .reaction-picker {
+    background: #2a2f32;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .message-action-btn,
+  .mobile-action-btn {
+    color: #8696a0;
+  }
+  
+  .message-action-btn:hover,
+  .mobile-action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--whatsapp-blue);
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .message-bubble {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition: none;
+  }
+  
+  .message-bubble,
+  .message-action-btn,
+  .mobile-action-btn,
+  .reaction-badge,
+  .reaction-option,
+  .download-btn,
+  .emoji-picker-close {
+    transition: none;
+  }
+  
+  .reaction-picker,
+  .emoji-picker-container {
+    animation: none;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .message-bubble-wrapper:hover .message-actions {
+    display: none;
+  }
+  
+  .message-action-btn:hover,
+  .mobile-action-btn:hover,
+  .reaction-badge:hover,
+  .reaction-option:hover,
+  .download-btn:hover,
+  .emoji-picker-close:hover {
+    transform: none;
+  }
+  
+  .message-action-btn:active,
+  .mobile-action-btn:active,
+  .reaction-badge:active,
+  .reaction-option:active,
+  .download-btn:active {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  .message-bubble-container {
+    max-width: 75%;
+  }
+  
+  .mobile-actions {
+    top: -40px;
+  }
+  
+  .message-image,
+  .message-video {
+    max-height: 150px;
+  }
+}
+/* Add these styles to your existing MessageBubble.css */
+
+/* ===== BUBBLE WITH REPLY CONTAINER ===== */
+.bubble-with-reply {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.message-bubble-wrapper.sender .bubble-with-reply {
+  flex-direction: row-reverse;
+}
+
+.message-bubble-wrapper.receiver .bubble-with-reply {
+  flex-direction: row;
+}
+
+/* ===== PERMANENT REPLY BUTTON ===== */
+.permanent-reply-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #667781;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+  opacity: 0.8;
+  position: relative;
+  z-index: 5;
+}
+
+.permanent-reply-btn:hover {
+  background: #ffffff;
+  color: var(--whatsapp-blue);
+  transform: scale(1.1);
+  opacity: 1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.permanent-reply-btn:active {
+  transform: scale(0.95);
+}
+
+/* ===== DESKTOP STYLES (min-width: 769px) ===== */
+@media (min-width: 769px) {
+  .bubble-with-reply {
+    gap: 8px;
+  }
+  
+  .permanent-reply-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* Smooth appear animation on desktop hover */
+  .message-bubble-wrapper .permanent-reply-btn {
+    opacity: 0.7;
+  }
+  
+  .message-bubble-wrapper:hover .permanent-reply-btn {
+    opacity: 1;
+  }
+}
+
+/* ===== TABLET STYLES (768px and below) ===== */
+@media (max-width: 768px) {
+  .bubble-with-reply {
+    gap: 6px;
+  }
+  
+  .permanent-reply-btn {
+    width: 36px;
+    height: 36px;
+    opacity: 0.9; /* More visible on tablets */
+  }
+  
+  /* Slightly larger tap target on tablets */
+  .permanent-reply-btn:active {
+    transform: scale(0.9);
+    background: var(--whatsapp-blue);
+    color: white;
+  }
+}
+
+/* ===== MOBILE STYLES (480px and below) ===== */
+@media (max-width: 480px) {
+  .bubble-with-reply {
+    gap: 4px;
+  }
+  
+  .permanent-reply-btn {
+    width: 40px;
+    height: 40px;
+    opacity: 0.95; /* Very visible on mobile */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Adjust bubble width to account for reply button */
+  .message-bubble-container {
+    max-width: calc(85% - 44px);
+  }
+  
+  /* Larger tap target and visual feedback */
+  .permanent-reply-btn:active {
+    transform: scale(0.85);
+    background: var(--whatsapp-blue);
+    color: white;
+    transition: all 0.1s ease;
+  }
+}
+
+/* ===== SMALL MOBILE STYLES (360px and below) ===== */
+@media (max-width: 360px) {
+  .bubble-with-reply {
+    gap: 3px;
+  }
+  
+  .permanent-reply-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .message-bubble-container {
+    max-width: calc(88% - 39px);
+  }
+}
+
+/* ===== LANDSCAPE MOBILE STYLES ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .bubble-with-reply {
+    gap: 4px;
+  }
+  
+  .permanent-reply-btn {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .message-bubble-container {
+    max-width: calc(80% - 38px);
+  }
+}
+
+/* ===== UPDATED MESSAGE ACTIONS POSITIONING ===== */
+/* Adjust desktop action positioning to account for permanent reply button */
+.message-actions {
+  position: absolute;
+  top: -36px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: var(--shadow-medium);
+  z-index: 10;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.message-bubble-wrapper.sender .message-actions {
+  right: 40px; /* Account for permanent reply button */
+}
+
+.message-bubble-wrapper.receiver .message-actions {
+  left: 40px; /* Account for permanent reply button */
+}
+
+/* Tablet adjustment for message actions */
+@media (max-width: 768px) {
+  .message-bubble-wrapper.sender .message-actions {
+    right: 46px;
+  }
+  
+  .message-bubble-wrapper.receiver .message-actions {
+    left: 46px;
+  }
+}
+
+/* Mobile adjustment for message actions */
+@media (max-width: 480px) {
+  .message-bubble-wrapper.sender .message-actions {
+    right: 50px;
+  }
+  
+  .message-bubble-wrapper.receiver .message-actions {
+    left: 50px;
+  }
+}
+
+/* ===== MOBILE ACTIONS OVERLAY ADJUSTMENT ===== */
+/* Ensure mobile actions don't overlap with permanent reply button */
+.mobile-actions-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.mobile-actions {
+  position: absolute;
+  top: -48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border-radius: 24px;
+  padding: 8px;
+  box-shadow: var(--shadow-heavy);
+  z-index: 20;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  pointer-events: auto;
+}
+
+.mobile-actions.sender {
+  right: 50px; /* Avoid overlapping with permanent reply button */
+}
+
+.mobile-actions.receiver {
+  left: 50px; /* Avoid overlapping with permanent reply button */
+}
+
+/* Adjust mobile actions positioning for different screen sizes */
+@media (max-width: 480px) {
+  .mobile-actions.sender {
+    right: 55px;
+  }
+  
+  .mobile-actions.receiver {
+    left: 55px;
+  }
+}
+
+@media (max-width: 360px) {
+  .mobile-actions.sender {
+    right: 50px;
+  }
+  
+  .mobile-actions.receiver {
+    left: 50px;
+  }
+  
+  .mobile-actions {
+    padding: 6px;
+    gap: 6px;
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  .permanent-reply-btn {
+    background: rgba(42, 47, 50, 0.95);
+    color: #8696a0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .permanent-reply-btn:hover {
+    background: #2a2f32;
+    color: var(--whatsapp-blue);
+  }
+  
+  .permanent-reply-btn:active {
+    background: var(--whatsapp-blue);
+    color: white;
+  }
+}
+
+/* ===== HIGH DPI/RETINA DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .permanent-reply-btn {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .permanent-reply-btn {
+    transition: none;
+  }
+  
+  .permanent-reply-btn:hover {
+    transform: none;
+  }
+  
+  .permanent-reply-btn:active {
+    transform: none;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  .permanent-reply-btn:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.95);
+    color: #667781;
+  }
+  
+  .permanent-reply-btn:active {
+    transform: scale(0.9);
+    background: var(--whatsapp-blue);
+    color: white;
+  }
+  
+  /* Make reply button always fully visible on touch devices */
+  .message-bubble-wrapper .permanent-reply-btn {
+    opacity: 0.95;
+  }
+}
+
+/* ===== ACCESSIBILITY FOCUS STYLES ===== */
+.permanent-reply-btn:focus-visible {
+  outline: 2px solid var(--whatsapp-blue);
+  outline-offset: 2px;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .permanent-reply-btn {
+    display: none;
+  }
+}
+
+/* ===== SMOOTH TRANSITIONS ===== */
+.bubble-with-reply {
+  transition: all 0.2s ease;
+}
+
+/* Ensure message bubble adjusts smoothly when reply button is present */
+.message-bubble {
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 0; /* Allow bubble to shrink if needed */
+}
